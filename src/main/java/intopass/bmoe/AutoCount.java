@@ -33,7 +33,8 @@ public class AutoCount {
         try {
             MainCount.do_count();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            exec_command("say something wrong");
             return;
         }
         exec_command("say data updated");
