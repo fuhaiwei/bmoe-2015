@@ -17,19 +17,25 @@ public class TempCount {
     public static void main(String[] args) {
         Stream.of(new File("output/benzhan/").listFiles())
                 .filter(f -> f.isDirectory())
-                .filter(f -> filter_date(f, "12-24"))
+                .filter(f -> filter_date(f, "12-25"))
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
                     System.out.println("投票数据");
-                    print_files(files, "01", s -> s.contains("Saber"));
-                    print_files(files, "01", s -> s.contains("佐仓千代"));
-                    print_files(files, "01", s -> s.contains("Archer"));
-                    print_files(files, "01", s -> s.contains("坂田银时"));
+                    print_files(files, "01", s -> s.contains("远坂凛"));
+//                    print_files(files, "01", s -> s.contains("佐仓千代"));
+//                    print_files(files, "01", s -> s.contains("Archer"));
+//                    print_files(files, "01", s -> s.contains("坂田银时"));
 
                     System.out.println("票差数据");
-                    print_files(files, "02", s -> s.contains("绚濑绘里") || s.contains("宫内莲华"));
-                    print_files(files, "02", s -> s.contains("天使") || s.contains("南小鸟"));
+                    print_files(files, "02", s -> s.contains("亚丝娜") || s.contains("时崎狂三"));
+                    print_files(files, "02", s -> s.contains("远坂凛") || s.contains("土间埋"));
+                    print_files(files, "02", s -> s.contains("牧濑红莉栖") || s.contains("白"));
+                    print_files(files, "02", s -> s.contains("加藤惠") || s.contains("友利奈绪"));
+                    print_files(files, "02", s -> s.contains("卫宫切嗣") || s.contains("杀老师"));
+                    print_files(files, "02", s -> s.contains("路飞") || s.contains("Lancer"));
+                    print_files(files, "02", s -> s.contains("鲁路修") || s.contains("土间太平"));
+                    print_files(files, "02", s -> s.contains("利威尔") || s.contains("音无结弦"));
                 });
     }
 
