@@ -49,8 +49,11 @@ public class AutoCount {
         if (hour == 0 && minute < 30) {
             return false;
         }
+        if (minute == 0 || minute == 30) {
+            return second > 20;
+        }
         if (minute == 1 || minute == 31) {
-            return second < 40;
+            return second > 40;
         }
         return false;
     }
