@@ -3,10 +3,12 @@ package intopass.bmoe;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.lang.Integer.parseInt;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
@@ -22,21 +24,34 @@ public class TempCount {
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
                     System.out.println("投票数据");
-                    print_files(files, "01", s -> s.contains("远坂凛"));
-//                    print_files(files, "01", s -> s.contains("佐仓千代"));
-//                    print_files(files, "01", s -> s.contains("Archer"));
-//                    print_files(files, "01", s -> s.contains("坂田银时"));
+//                    print_files(files, "01", s -> s.contains("亚丝娜"));;
+//                    print_files(files, "01", s -> s.contains("远坂凛"));;
+//                    print_files(files, "01", s -> s.contains("牧濑红莉栖"));;
+//                    print_files(files, "01", s -> s.contains("加藤惠"));;
+//                    print_files(files, "01", s -> s.contains("卫宫切嗣"));;
+//                    print_files(files, "01", s -> s.contains("路飞"));;
+//                    print_files(files, "01", s -> s.contains("鲁路修"));;
+//                    print_files(files, "01", s -> s.contains("利威尔"));
 
                     System.out.println("票差数据");
-                    print_files(files, "02", s -> s.contains("亚丝娜") || s.contains("时崎狂三"));
                     print_files(files, "02", s -> s.contains("远坂凛") || s.contains("土间埋"));
+                    print_files(files, "02", s -> s.contains("亚丝娜") || s.contains("时崎狂三"));
                     print_files(files, "02", s -> s.contains("牧濑红莉栖") || s.contains("白"));
                     print_files(files, "02", s -> s.contains("加藤惠") || s.contains("友利奈绪"));
-                    print_files(files, "02", s -> s.contains("卫宫切嗣") || s.contains("杀老师"));
-                    print_files(files, "02", s -> s.contains("路飞") || s.contains("Lancer"));
-                    print_files(files, "02", s -> s.contains("鲁路修") || s.contains("土间太平"));
-                    print_files(files, "02", s -> s.contains("利威尔") || s.contains("音无结弦"));
+//                    print_files(files, "02", s -> s.contains("卫宫切嗣") || s.contains("杀老师"));
+//                    print_files(files, "02", s -> s.contains("路飞") || s.contains("Lancer"));
+//                    print_files(files, "02", s -> s.contains("鲁路修") || s.contains("土间太平"));
+//                    print_files(files, "02", s -> s.contains("利威尔") || s.contains("音无结弦"));
                 });
+    }
+
+    public static Predicate<String> filter_time() {
+        return t -> {
+            if (t.compareTo("02:00") > 0 && t.compareTo("07:00") < 0) {
+                return false;
+            }
+            return true;
+        };
     }
 
     private static boolean filter_date(File f, String... dates) {
@@ -47,21 +62,29 @@ public class TempCount {
         Map<String, List<File>> collect = files.stream()
                 .filter(f -> f.getName().startsWith(type))
                 .collect(groupingBy(f -> f.getName().substring(10, 15)));
+        AtomicInteger prev = new AtomicInteger(0);
         collect.keySet()
                 .stream()
+                .filter(filter_time())
                 .sorted()
-                .forEach(time -> collect.get(time).forEach(file -> {
-                    try (Scanner scanner = new Scanner(file)) {
-                        while (scanner.hasNextLine()) {
-                            String line = scanner.nextLine();
-                            if (predicate.test(line)) {
-                                System.out.println(time + " " + format(type, line));
-                            }
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                .forEach(time -> {
+                    int curr = parseInt(time.substring(0, 2)) * 60 + parseInt(time.substring(3));
+                    if (curr - prev.getAndSet(curr) > 60) {
+                        System.out.println("......");
                     }
-                }));
+                    collect.get(time).forEach(file -> {
+                        try (Scanner scanner = new Scanner(file)) {
+                            while (scanner.hasNextLine()) {
+                                String line = scanner.nextLine();
+                                if (predicate.test(line)) {
+                                    System.out.println(time + " " + format(type, line));
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                });
         System.out.println();
         System.out.println();
     }
