@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static intopass.bmoe.spdier.Spider.save_static_json;
+
 /**
  * Created by fuhaiwei on 15/12/20.
  */
@@ -18,6 +20,7 @@ public class AutoCount {
         do_count();
         new Timer().schedule(new TimerTask() {
             public void run() {
+                save_static_json();
                 try_count();
             }
         }, 1000, 15 * 1000);

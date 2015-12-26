@@ -7,6 +7,8 @@ import org.jsoup.Jsoup;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -18,6 +20,35 @@ import static java.util.stream.Collectors.*;
  * Created by fuhaiwei on 15/12/20.
  */
 public abstract class Spider {
+
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public static void save_static_json() {
+        int retryCount = 3;
+        for (int i = 0; i < retryCount; i++) {
+            try {
+                String json_text = Jsoup.connect("http://moe.bilibili.com/api/s/getTopEight/static.json")
+                        .ignoreContentType(true)
+                        .method(Connection.Method.GET)
+                        .execute()
+                        .body();
+                File file = new File("cached/json_text2/" + datetime() + ".txt");
+                file.getParentFile().mkdirs();
+                try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+                    writer.println(json_text);
+                    writer.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
+                System.out.printf("连接失败: %s%n尝试重新连接中(%d/%d)%n", e.getMessage(), i + 1, retryCount);
+            }
+        }
+    }
+
+    private static String datetime() {
+        return FORMATTER.format(LocalDateTime.now());
+    }
 
     public static List<Person> get_persons(LocalDate start, LocalDate end) {
         List<Person> persons = Collections.synchronizedList(new ArrayList<>());
