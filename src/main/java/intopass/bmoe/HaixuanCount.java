@@ -16,12 +16,16 @@ public class HaixuanCount {
     public static void main(String[] args) {
         List<Person> haixuan = Spider.get_persons(LocalDate.of(2015, 10, 31), LocalDate.of(2015, 12, 6));
         List<Person> benzhan_32 = Spider.get_persons(LocalDate.of(2015, 12, 20), LocalDate.of(2015, 12, 24));
-        List<Person> benzhan_16 = benzhan_32.stream().filter(p -> p.rank == 1).collect(toList());
+        List<Person> benzhan_16 = Spider.get_persons(LocalDate.of(2015, 12, 24), LocalDate.of(2015, 12, 26));
+        List<Person> benzhan_8 = benzhan_16.stream().filter(p -> p.rank == 1).collect(toList());
 
         List<Person> haixuan_32 = benzhan_32.stream()
                 .map(p -> find_by_rid(haixuan, p.rid))
                 .collect(toList());
         List<Person> haixuan_16 = benzhan_16.stream()
+                .map(p -> find_by_rid(haixuan, p.rid))
+                .collect(toList());
+        List<Person> haixuan_8 = benzhan_8.stream()
                 .map(p -> find_by_rid(haixuan, p.rid))
                 .collect(toList());
 
@@ -30,6 +34,9 @@ public class HaixuanCount {
 
         print_date("海选晋级16强日期分布情况 女子组", haixuan_16, 0);
         print_date("海选晋级16强日期分布情况 男子组", haixuan_16, 1);
+
+        print_date("海选晋级8强日期分布情况 女子组", haixuan_8, 0);
+        print_date("海选晋级8强日期分布情况 男子组", haixuan_8, 1);
     }
 
     private static void print_date(String title, List<Person> persons, int sex) {
