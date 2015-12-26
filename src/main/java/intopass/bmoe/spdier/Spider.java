@@ -38,10 +38,12 @@ public abstract class Spider {
                     writer.println(json_text);
                     writer.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("文件写入失败: " + file.getPath(), e);
                 }
             } catch (IOException e) {
                 System.out.printf("连接失败: %s%n尝试重新连接中(%d/%d)%n", e.getMessage(), i + 1, retryCount);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
     }
