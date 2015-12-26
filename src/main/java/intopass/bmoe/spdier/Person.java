@@ -49,4 +49,7 @@ public class Person implements Comparable<Person> {
         return sort_by_vote().compare(this, o);
     }
 
+    public String toString() {
+        return String.format("%s %s (%d)", date.substring(5), name, vote);
+    }
 }
