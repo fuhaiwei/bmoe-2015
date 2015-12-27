@@ -48,6 +48,7 @@ public abstract class Spider {
                     } catch (IOException e) {
                         throw new RuntimeException("文件写入失败: " + file.getPath(), e);
                     }
+                    System.out.println("get static : " + file.getName());
                 }
             } catch (IOException e) {
                 System.out.printf("连接失败: %s%n尝试重新连接中(%d/%d)%n", e.getMessage(), i + 1, retryCount);

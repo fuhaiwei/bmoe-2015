@@ -13,8 +13,6 @@ import static intopass.bmoe.spdier.Spider.save_static_json;
  */
 public class AutoCount {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     public static void main(String[] args) {
         System.out.println("Auto Count Starting");
         do_count();
@@ -41,7 +39,6 @@ public class AutoCount {
             return;
         }
         exec_command("say data updated");
-        System.out.println(FORMATTER.format(LocalDateTime.now()));
     }
 
     private static boolean is_count(LocalTime now) {
