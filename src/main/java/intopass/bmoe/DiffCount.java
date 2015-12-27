@@ -17,6 +17,9 @@ public class DiffCount {
                     int hashcode = read_file(f);
                     if (prev.getAndSet(hashcode) != hashcode) {
                         System.out.println(f);
+                    } else {
+                        f.delete();
+                        System.out.println(f + " DEL");
                     }
                 });
     }
