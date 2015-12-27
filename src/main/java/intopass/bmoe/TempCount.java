@@ -18,19 +18,19 @@ public class TempCount {
     public static void main(String[] args) {
         Stream.of(new File("output/benzhan/").listFiles())
                 .filter(f -> f.isDirectory())
-                .filter(f -> filter_date(f, "12-27"))
+                .filter(f -> filter_date(f, "12-28"))
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
 //                    System.out.println("投票数据");
-//                    print_files(files, "01", s -> s.contains("佐仓千代"));
-//                    print_files(files, "01", s -> s.contains("加藤惠"));
-//                    print_files(files, "01", s -> s.contains("杀老师"));
-//                    print_files(files, "01", s -> s.contains("利威尔·阿克曼"));
+//                    print_files(files, "01", s -> s.contains("远坂凛"));
+//                    print_files(files, "01", s -> s.contains("绚濑绘里"));
+//                    print_files(files, "01", s -> s.contains("桐人"));
+//                    print_files(files, "01", s -> s.contains("坂田银时"));
 
                     System.out.println("票差数据");
-                    print_files(files, "02", s -> s.contains("佐仓千代") || s.contains("加藤惠"));
-                    print_files(files, "02", s -> s.contains("杀老师") || s.contains("利威尔·阿克曼"));
+                    print_files(files, "02", s -> s.contains("远坂凛") || s.contains("绚濑绘里"));
+                    print_files(files, "02", s -> s.contains("桐人") || s.contains("坂田银时"));
                 });
     }
 
