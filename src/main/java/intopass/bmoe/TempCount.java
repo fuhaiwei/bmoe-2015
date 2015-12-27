@@ -18,29 +18,19 @@ public class TempCount {
     public static void main(String[] args) {
         Stream.of(new File("output/benzhan/").listFiles())
                 .filter(f -> f.isDirectory())
-                .filter(f -> filter_date(f, "12-25"))
+                .filter(f -> filter_date(f, "12-27"))
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
-//                    System.out.println("投票数据");
-//                    print_files(files, "01", s -> s.contains("亚丝娜"));
-//                    print_files(files, "01", s -> s.contains("远坂凛"));
-//                    print_files(files, "01", s -> s.contains("牧濑红莉栖"));
-//                    print_files(files, "01", s -> s.contains("加藤惠"));
-//                    print_files(files, "01", s -> s.contains("卫宫切嗣"));
-//                    print_files(files, "01", s -> s.contains("路飞"));
-//                    print_files(files, "01", s -> s.contains("鲁路修"));
-//                    print_files(files, "01", s -> s.contains("利威尔"));
+                    System.out.println("投票数据");
+                    print_files(files, "01", s -> s.contains("佐仓千代"));
+                    print_files(files, "01", s -> s.contains("加藤惠"));
+                    print_files(files, "01", s -> s.contains("杀老师"));
+                    print_files(files, "01", s -> s.contains("利威尔·阿克曼"));
 
-//                    System.out.println("票差数据");
-//                    print_files(files, "02", s -> s.contains("远坂凛") || s.contains("土间埋"));
-                    print_files(files, "02", s -> s.contains("亚丝娜") || s.contains("时崎狂三"));
-                    print_files(files, "02", s -> s.contains("牧濑红莉栖") || s.contains("白"));
-                    print_files(files, "02", s -> s.contains("加藤惠") || s.contains("友利奈绪"));
-//                    print_files(files, "02", s -> s.contains("卫宫切嗣") || s.contains("杀老师"));
-//                    print_files(files, "02", s -> s.contains("路飞") || s.contains("Lancer"));
-//                    print_files(files, "02", s -> s.contains("鲁路修") || s.contains("土间太平"));
-//                    print_files(files, "02", s -> s.contains("利威尔") || s.contains("音无结弦"));
+                    System.out.println("票差数据");
+                    print_files(files, "02", s -> s.contains("佐仓千代") || s.contains("加藤惠"));
+                    print_files(files, "02", s -> s.contains("杀老师") || s.contains("利威尔·阿克曼"));
                 });
     }
 
@@ -95,7 +85,7 @@ public class TempCount {
         if (type.equals("01")) {
             return line.substring(3);
         } else if (type.equals("02")) {
-            return line.substring(8);
+            return line.substring(11);
         } else {
             return line;
         }
