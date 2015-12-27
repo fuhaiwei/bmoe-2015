@@ -16,6 +16,7 @@ public class Person implements Comparable<Person> {
     public String name; // 人物名称
     public String image; // 头像链接
 
+    public int id; // 比赛ID
     public int vote; // 投票数
     public int rank; // 小组名次
     public int rid; // 角色ID
@@ -33,6 +34,7 @@ public class Person implements Comparable<Person> {
             this.image = object.getString("small_image_url");
         }
 
+        this.id = object.getInt("id");
         this.vote = object.getInt("votes_count");
         this.rid = object.getInt("rid");
         this.sex = object.getInt("sex");

@@ -57,19 +57,10 @@ public abstract class Spider {
         }
     }
 
-    private static int read_file(File f) {
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            return br.lines().mapToInt(line -> line.hashCode()).sum();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return 0;
-    }
-
     public static List<Person> get_static_persons(File file, List<Person> persons) {
         String date = file.getName().substring(5, 10);
         String time = file.getName().substring(11, 19);
-        List<Integer> rids = persons.stream().map(p -> p.rid).collect(toList());
+        List<Integer> ids = persons.stream().map(p -> p.id).collect(toList());
         Builder<Person> builder = Stream.builder();
         JSONObject object = new JSONObject(read_content(file));
         JSONObject data = object.getJSONObject("data");
@@ -77,7 +68,7 @@ public abstract class Spider {
             JSONObject sex_group = data.getJSONObject(sex_name);
             sex_group.keySet().forEach(rank -> {
                 JSONObject person = sex_group.getJSONObject(rank);
-                if (person.has("name") && rids.contains(person.getInt("role_id"))) {
+                if (person.has("name") && ids.contains(person.getInt("relation_id"))) {
                     builder.add(new Person(person, date, time));
                 }
             });
