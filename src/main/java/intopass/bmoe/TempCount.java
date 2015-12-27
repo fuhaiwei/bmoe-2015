@@ -22,11 +22,11 @@ public class TempCount {
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
-                    System.out.println("投票数据");
-                    print_files(files, "01", s -> s.contains("佐仓千代"));
-                    print_files(files, "01", s -> s.contains("加藤惠"));
-                    print_files(files, "01", s -> s.contains("杀老师"));
-                    print_files(files, "01", s -> s.contains("利威尔·阿克曼"));
+//                    System.out.println("投票数据");
+//                    print_files(files, "01", s -> s.contains("佐仓千代"));
+//                    print_files(files, "01", s -> s.contains("加藤惠"));
+//                    print_files(files, "01", s -> s.contains("杀老师"));
+//                    print_files(files, "01", s -> s.contains("利威尔·阿克曼"));
 
                     System.out.println("票差数据");
                     print_files(files, "02", s -> s.contains("佐仓千代") || s.contains("加藤惠"));
@@ -36,9 +36,9 @@ public class TempCount {
 
     public static Predicate<String> filter_time() {
         return t -> {
-//            if (t.compareTo("01:00") > 0 && t.compareTo("19:00") < 0) {
-//                return false;
-//            }
+            if (t.compareTo("02:00") > 0 && t.compareTo("06:00") < 0) {
+                return false;
+            }
 //            if (t.endsWith(":30")) {
 //                return false;
 //            }
