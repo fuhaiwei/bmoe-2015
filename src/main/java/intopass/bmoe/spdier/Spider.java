@@ -21,7 +21,13 @@ import static java.util.stream.Collectors.*;
  */
 public abstract class Spider {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter FORMATTER;
+    public static final AtomicInteger PREV_HASHCODE;
+
+    static {
+        FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd/yyyy-MM-dd HH:mm:ss");
+        PREV_HASHCODE = new AtomicInteger(0);
+    }
 
     public static void save_static_json() {
         int retryCount = 3;
@@ -32,13 +38,16 @@ public abstract class Spider {
                         .method(Connection.Method.GET)
                         .execute()
                         .body();
-                File file = new File("cached/json_text2/" + datetime() + ".txt");
-                file.getParentFile().mkdirs();
-                try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-                    writer.println(json_text);
-                    writer.flush();
-                } catch (IOException e) {
-                    throw new RuntimeException("文件写入失败: " + file.getPath(), e);
+                int hashCode = json_text.hashCode();
+                if (PREV_HASHCODE.getAndSet(hashCode) != hashCode) {
+                    File file = new File("cached/json_text2/" + datetime() + ".txt");
+                    file.getParentFile().mkdirs();
+                    try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+                        writer.println(json_text);
+                        writer.flush();
+                    } catch (IOException e) {
+                        throw new RuntimeException("文件写入失败: " + file.getPath(), e);
+                    }
                 }
             } catch (IOException e) {
                 System.out.printf("连接失败: %s%n尝试重新连接中(%d/%d)%n", e.getMessage(), i + 1, retryCount);
@@ -46,6 +55,15 @@ public abstract class Spider {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private static int read_file(File f) {
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
+            return br.lines().mapToInt(line -> line.hashCode()).sum();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
     }
 
     public static List<Person> get_static_persons(File file, List<Person> persons) {

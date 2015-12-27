@@ -7,21 +7,23 @@ import java.util.stream.Stream;
 /**
  * Created by fuhaiwei on 15/12/27.
  */
-public class DiffCount {
+public class StaticClean {
     public static void main(String[] args) {
         File path = new File("cached/json_text2");
         AtomicInteger prev = new AtomicInteger(0);
         Stream.of(path.listFiles())
-                .filter(f -> f.getName().endsWith(".txt"))
-                .forEach(f -> {
-                    int hashcode = read_file(f);
-                    if (prev.getAndSet(hashcode) != hashcode) {
-                        System.out.println(f);
-                    } else {
-                        f.delete();
-                        System.out.println(f + " DEL");
-                    }
-                });
+                .filter(p -> p.isDirectory())
+                .forEach(p -> Stream.of(p.listFiles())
+                        .filter(f -> f.getName().endsWith(".txt"))
+                        .forEach(f -> {
+                            int hashcode = read_file(f);
+                            if (prev.getAndSet(hashcode) != hashcode) {
+                                System.out.println(f);
+                            } else {
+                                f.delete();
+                                System.out.println(f + " DEL");
+                            }
+                        }));
     }
 
     private static int read_file(File f) {
