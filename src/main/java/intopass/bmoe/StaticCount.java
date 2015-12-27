@@ -17,17 +17,18 @@ import static java.util.stream.Collectors.toList;
  */
 public class StaticCount {
     public static void main(String[] args) {
-        File path = new File("cached/json_text2");
-        List<Person> persons = Spider.get_persons(LocalDate.now().toString());
+        String date = "2015-12-27";
+        File path = new File("cached/json_text2/" + date);
+        List<Person> persons = Spider.get_persons(date);
         print_static_persons(path, persons, 0);
     }
 
     public static Predicate<File> filter_time() {
         return file -> {
-            String time = file.getName().substring(11, 19);
-            if (time.compareTo("00:30:00") > 0) {
-                return false;
-            }
+//            String time = file.getName().substring(11, 19);
+//            if (time.compareTo("00:30:00") > 0) {
+//                return false;
+//            }
             return true;
         };
     }
@@ -47,9 +48,12 @@ public class StaticCount {
     }
 
     public static void print_static_persons(List<Person> persons, String group) {
+        int vote_0 = persons.get(0).vote;
+        int vote_1 = persons.get(1).vote;
+        int vote_sub = vote_0 - vote_1;
         int vote_sum = persons.stream().mapToInt(p -> p.vote).sum();
-        int vote_sub = persons.get(0).vote - persons.get(1).vote;
-        System.out.printf("%s (总票: %d, 票差: %d)%n", group, vote_sum, vote_sub);
+        System.out.printf("%s (总票: %d, 票差: %d, 比例: %4.1f%%)%n",
+                group, vote_sum, vote_sub, per(vote_sub, vote_1));
         AtomicInteger c = new AtomicInteger(1);
         persons.stream().forEach(p -> System.out.printf("%d: [ %05d | %4.1f%% ] %s%n",
                 c.getAndIncrement(), p.vote, per(p.vote, vote_sum), p.name));
