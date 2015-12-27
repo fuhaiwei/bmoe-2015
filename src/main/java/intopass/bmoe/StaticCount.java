@@ -24,7 +24,8 @@ public class StaticCount {
 
     public static Predicate<File> filter_time() {
         return file -> {
-            if (file.getName().substring(11, 19).compareTo("00:30:00") > 0) {
+            String time = file.getName().substring(11, 19);
+            if (time.compareTo("00:30:00") > 0) {
                 return false;
             }
             return true;
