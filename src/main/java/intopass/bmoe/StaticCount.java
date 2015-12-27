@@ -39,21 +39,21 @@ public class StaticCount {
                 .filter(filter_time())
                 .forEach(f -> {
                     List<Person> static_persons = Spider.get_static_persons(f, persons);
-                    System.out.println(f.getName().substring(11, 19));
+                    System.out.printf("%s %s%n", sex(sex), f.getName().substring(11, 19));
                     print_static_persons(static_persons.stream()
                             .filter(filter_sex(sex))
                             .sorted()
-                            .collect(toList()), sex(sex));
+                            .collect(toList()));
                 });
     }
 
-    public static void print_static_persons(List<Person> persons, String group) {
+    public static void print_static_persons(List<Person> persons) {
         int vote_0 = persons.get(0).vote;
         int vote_1 = persons.get(1).vote;
         int vote_sub = vote_0 - vote_1;
         int vote_sum = persons.stream().mapToInt(p -> p.vote).sum();
-        System.out.printf("%s (总票: %d, 票差: %d, 比例: %4.1f%%)%n",
-                group, vote_sum, vote_sub, per(vote_sub, vote_1));
+        System.out.printf("(总票: %d, 票差: %d, 比例: %4.1f%%)%n",
+                vote_sum, vote_sub, per(vote_sub, vote_1));
         AtomicInteger c = new AtomicInteger(1);
         persons.stream().forEach(p -> System.out.printf("%d: [ %05d | %4.1f%% ] %s%n",
                 c.getAndIncrement(), p.vote, per(p.vote, vote_sum), p.name));
