@@ -11,6 +11,7 @@ public class Person implements Comparable<Person> {
 
     public String group; // 分组名称
     public String date; // 比赛日期
+    public String time; // 当前时间
     public String bangumi; // 作品名称
     public String name; // 人物名称
     public String image; // 头像链接
@@ -37,8 +38,17 @@ public class Person implements Comparable<Person> {
         this.sex = object.getInt("sex");
     }
 
-    public static Comparator<Person> sort_by_rank() {
-        return (o1, o2) -> o1.rank - o2.rank;
+    public Person(JSONObject object, String date, String time) {
+        this.date = date;
+        this.time = time;
+
+        this.bangumi = object.getString("bangumi");
+        this.name = object.getString("name");
+        this.image = object.getString("image_url");
+
+        this.vote = object.getInt("votes_count");
+        this.rid = object.getInt("role_id");
+        this.sex = object.getInt("sex");
     }
 
     public static Comparator<Person> sort_by_vote() {

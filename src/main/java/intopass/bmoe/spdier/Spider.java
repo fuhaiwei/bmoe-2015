@@ -48,6 +48,25 @@ public abstract class Spider {
         }
     }
 
+    public static List<Person> get_static_persons(File file, List<Person> persons) {
+        String date = file.getName().substring(5, 10);
+        String time = file.getName().substring(11, 19);
+        List<Integer> rids = persons.stream().map(p -> p.rid).collect(toList());
+        Builder<Person> builder = Stream.builder();
+        JSONObject object = new JSONObject(read_content(file));
+        JSONObject data = object.getJSONObject("data");
+        data.keySet().forEach(sex_name -> {
+            JSONObject sex_group = data.getJSONObject(sex_name);
+            sex_group.keySet().forEach(rank -> {
+                JSONObject person = sex_group.getJSONObject(rank);
+                if (person.has("name") && rids.contains(person.getInt("role_id"))) {
+                    builder.add(new Person(person, date, time));
+                }
+            });
+        });
+        return builder.build().collect(toList());
+    }
+
     private static String datetime() {
         return FORMATTER.format(LocalDateTime.now());
     }
@@ -134,26 +153,11 @@ public abstract class Spider {
     }
 
     public static String get_json_text(String date) {
-        File file = new File("cached/json_text/" + date + ".txt");
-        if (file.canRead()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                return reader.lines().collect(joining());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+        return read_content(new File("cached/json_text/" + date + ".txt"));
     }
 
     public static void write_json_text(String date, String json_text) {
-        File file = new File("cached/json_text/" + date + ".txt");
-        file.getParentFile().mkdirs();
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
-            writer.println(json_text);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        write_content(new File("cached/json_text/" + date + ".txt"), json_text);
     }
 
     public static String fetch_json_text(String date) {
@@ -171,6 +175,27 @@ public abstract class Spider {
             }
         }
         throw new RuntimeException(String.format("获取 %s 数据经多次重试后仍然失败, 程序异常退出%n", date));
+    }
+
+    public static String read_content(File file) {
+        if (file.canRead()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+                return reader.lines().collect(joining());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public static void write_content(File file, String json_text) {
+        file.getParentFile().mkdirs();
+        try (PrintWriter writer = new PrintWriter(new FileWriter(file))) {
+            writer.println(json_text);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
