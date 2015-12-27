@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.toList;
  * Created by fuhaiwei on 15/12/27.
  */
 public class StaticCount {
+
     public static void main(String[] args) {
         String date = "2015-12-27";
         File path = new File("cached/json_text2/" + date);
@@ -37,6 +38,8 @@ public class StaticCount {
         Stream.of(path.listFiles())
                 .filter(f -> f.getName().endsWith(".txt"))
                 .filter(filter_time())
+//                .skip(0)
+//                .limit(10)
                 .forEach(f -> {
                     List<Person> static_persons = Spider.get_static_persons(f, persons);
                     System.out.printf("%s %s%n", sex(sex), f.getName().substring(11, 19));
