@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 /**
  * Created by fuhaiwei on 15/12/27.
  */
-public class StaticCount {
+public class DiffCount {
     public static void main(String[] args) {
         File path = new File("cached/json_text2");
         AtomicInteger prev = new AtomicInteger(0);
