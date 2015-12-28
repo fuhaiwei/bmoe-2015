@@ -22,11 +22,11 @@ public class TempCount {
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
-//                    System.out.println("投票数据");
-//                    print_files(files, "01", s -> s.contains("远坂凛"));
+                    System.out.println("投票数据");
+                    print_files(files, "01", s -> s.contains("远坂凛"));
 //                    print_files(files, "01", s -> s.contains("绚濑绘里"));
 //                    print_files(files, "01", s -> s.contains("桐人"));
-//                    print_files(files, "01", s -> s.contains("坂田银时"));
+                    print_files(files, "01", s -> s.contains("坂田银时"));
 
                     System.out.println("票差数据");
                     print_files(files, "02", s -> s.contains("远坂凛") || s.contains("绚濑绘里"));
@@ -36,9 +36,9 @@ public class TempCount {
 
     public static Predicate<String> filter_time() {
         return t -> {
-//            if (t.compareTo("02:00") > 0 && t.compareTo("10:00") < 0) {
-//                return false;
-//            }
+            if (t.compareTo("01:30") > 0 && t.compareTo("16:30") < 0) {
+                return false;
+            }
 //            if (t.endsWith(":30")) {
 //                return false;
 //            }
@@ -77,7 +77,6 @@ public class TempCount {
                         }
                     });
                 });
-        System.out.println();
         System.out.println();
     }
 
