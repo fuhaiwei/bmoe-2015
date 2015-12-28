@@ -18,7 +18,7 @@ import static java.util.stream.Collectors.toList;
 public class StaticCount {
 
     public static void main(String[] args) {
-        String date = "2015-12-28";
+        String date = "2015-12-29";
         File path = new File("cached/json_text2/" + date);
         List<Person> persons = Spider.get_persons(date);
         print_static_persons(path, persons, 0);
