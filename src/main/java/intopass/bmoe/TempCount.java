@@ -18,28 +18,28 @@ public class TempCount {
     public static void main(String[] args) {
         Stream.of(new File("output/benzhan/").listFiles())
                 .filter(f -> f.isDirectory())
-                .filter(f -> filter_date(f, "12-29"))
+                .filter(f -> filter_date(f, "12-30"))
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
                     System.out.println("投票数据");
-                    print_files(files, "01", s -> s.contains("Saber"));
-                    print_files(files, "01", s -> s.contains("牧濑红莉栖"));
-                    print_files(files, "01", s -> s.contains("小智"));
-                    print_files(files, "01", s -> s.contains("路飞"));
+                    print_files(files, "01", s -> s.contains("天使"));
+                    print_files(files, "01", s -> s.contains("亚丝娜"));
+                    print_files(files, "01", s -> s.contains("Archer"));
+                    print_files(files, "01", s -> s.contains("鲁路修"));
 
                     System.out.println("票差数据");
-                    print_files(files, "02", s -> s.contains("Saber") || s.contains("牧濑红莉栖"));
-                    print_files(files, "02", s -> s.contains("小智") || s.contains("路飞"));
+                    print_files(files, "02", s -> s.contains("天使") || s.contains("亚丝娜"));
+                    print_files(files, "02", s -> s.contains("Archer") || s.contains("鲁路修"));
                 });
     }
 
     public static Predicate<String> filter_time() {
         return t -> {
-//            if (t.compareTo("02:00") > 0 && t.compareTo("6:00") < 0) {
+//            if (t.compareTo("02:00") > 0 && t.compareTo("19:00") < 0) {
 //                return false;
 //            }
-//            if (t.endsWith(":30")) {
+//            if (!t.equals("00:30") && t.endsWith(":30")) {
 //                return false;
 //            }
             return true;
