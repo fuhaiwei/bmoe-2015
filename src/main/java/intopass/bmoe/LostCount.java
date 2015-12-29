@@ -15,8 +15,8 @@ import static java.util.stream.Collectors.groupingBy;
 public class LostCount {
 
     public static void main(String[] args) {
-        LocalDate start = LocalDate.of(2015, 12, 12);
-        LocalDate end = LocalDate.of(2015, 12, 26);
+        LocalDate start = LocalDate.of(2015, 12, 27);
+        LocalDate end = LocalDate.of(2015, 12, 30);
         List<Person> persons = Spider.get_persons(start, end);
 
         count_vote(persons);
@@ -50,7 +50,7 @@ public class LostCount {
                         float scale2 = (vote_max.intValue() - vote_sum) * 100f / vote_max.intValue();
                         System.out.printf("%s [ %05d | %3.1f%% | %.1f%% ] %s%n",
                                 group_name, vote_sum, scale2, scale, name);
-                        if (count.getAndIncrement() % 8 == 0) {
+                        if (count.getAndIncrement() % 2 == 0) {
                             System.out.println();
                         }
                     });
