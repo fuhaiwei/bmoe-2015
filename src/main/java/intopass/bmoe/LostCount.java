@@ -16,7 +16,7 @@ public class LostCount {
 
     public static void main(String[] args) {
         LocalDate start = LocalDate.of(2015, 12, 27);
-        LocalDate end = LocalDate.of(2015, 12, 30);
+        LocalDate end = LocalDate.now().plusDays(1);
         List<Person> persons = Spider.get_persons(start, end);
 
         count_vote(persons);
