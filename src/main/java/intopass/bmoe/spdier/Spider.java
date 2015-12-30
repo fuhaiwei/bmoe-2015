@@ -95,7 +95,8 @@ public abstract class Spider {
         JSONObject jsonObject = get_json_object(date);
         JSONObject scheduleState = jsonObject.getJSONObject("scheduleState");
         JSONObject data = jsonObject.getJSONObject("data");
-        if (scheduleState.getString("sname").startsWith("本战")) {
+        String sname = scheduleState.getString("sname");
+        if (sname.contains("本战") || sname.contains("决赛")) {
             return get_benzhan_persons(date, data);
         } else {
             return get_haixuan_persons(date, data);
