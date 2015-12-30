@@ -84,7 +84,7 @@ public class TempCount {
         if (type.equals("01")) {
             return line.substring(3);
         } else if (type.equals("02")) {
-            return line.substring(11);
+            return line.substring(10);
         } else {
             return line;
         }
