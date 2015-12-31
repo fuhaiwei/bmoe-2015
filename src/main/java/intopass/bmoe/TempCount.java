@@ -36,9 +36,9 @@ public class TempCount {
 
     public static Predicate<String> filter_time() {
         return t -> {
-//            if (t.compareTo("02:00") > 0 && t.compareTo("19:00") < 0) {
-//                return false;
-//            }
+            if (t.compareTo("01:00") > 0 && t.compareTo("07:00") < 0) {
+                return false;
+            }
 //            if (!t.equals("00:30") && t.endsWith(":30")) {
 //                return false;
 //            }
@@ -60,31 +60,37 @@ public class TempCount {
                 .filter(filter_time())
                 .sorted()
                 .forEach(time -> {
-                    int curr = parseInt(time.substring(0, 2)) * 60 + parseInt(time.substring(3));
-                    if (curr - prev.getAndSet(curr) > 60) {
-                        System.out.println("......");
-                    }
-                    collect.get(time).forEach(file -> {
-                        try (Scanner scanner = new Scanner(file)) {
-                            while (scanner.hasNextLine()) {
-                                String line = scanner.nextLine();
-                                if (predicate.test(line)) {
-                                    System.out.println(time + " " + format(type, line));
-                                }
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    check_skip(prev, time);
+                    collect.get(time).forEach(file -> print_file(file, type, time, predicate));
                 });
         System.out.println();
+    }
+
+    private static void check_skip(AtomicInteger prev, String time) {
+        int curr = parseInt(time.substring(0, 2)) * 60 + parseInt(time.substring(3));
+        if (curr - prev.getAndSet(curr) > 60) {
+            System.out.println("......");
+        }
+    }
+
+    private static void print_file(File file, String type, String time, Predicate<String> predicate) {
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if (predicate.test(line)) {
+                    System.out.println(time + " " + format(type, line));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String format(String type, String line) {
         if (type.equals("01")) {
             return line.substring(3);
         } else if (type.equals("02")) {
-            return line.substring(10);
+            return line.substring(line.indexOf(':') + 2);
         } else {
             return line;
         }
