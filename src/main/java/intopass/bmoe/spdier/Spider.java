@@ -69,7 +69,7 @@ public abstract class Spider {
             JSONObject sex_group = data.getJSONObject(sex_name);
             sex_group.keySet().forEach(rank -> {
                 JSONObject person = sex_group.getJSONObject(rank);
-                if (person.has("name") && ids.contains(person.getInt("relation_id"))) {
+                if (person.has("name") && !person.isNull("relation_id") && ids.contains(person.getInt("relation_id"))) {
                     builder.add(new Person(person, date, time));
                 }
             });
