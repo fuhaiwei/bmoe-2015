@@ -110,7 +110,7 @@ public abstract class Spider {
             JSONArray sex_group = data.getJSONArray(sex);
             for (int i = 0; i < sex_group.length(); i++) {
                 JSONObject group = sex_group.getJSONObject(i);
-                String gname = group.getString("name");
+                String gname = group.isNull("name") ? "比赛" : group.getString("name");
                 JSONArray members = group.getJSONArray("members");
 
                 Builder<Person> temp = Stream.builder();
