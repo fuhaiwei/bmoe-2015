@@ -18,19 +18,19 @@ public class TempCount {
     public static void main(String[] args) {
         Stream.of(new File("output/benzhan/").listFiles())
                 .filter(f -> f.isDirectory())
-                .filter(f -> filter_date(f, "01-01"))
+                .filter(f -> filter_date(f, "01-02"))
                 .map(f -> Stream.of(f.listFiles()).collect(toList()))
                 .reduce(reduce_files())
                 .ifPresent((files) -> {
                     System.out.println("投票数据");
-                    print_files(files, "01", s -> s.contains("远坂凛"));
+                    print_files(files, "01", s -> s.contains("佐仓千代"));
                     print_files(files, "01", s -> s.contains("亚丝娜"));
+                    print_files(files, "01", s -> s.contains("路飞"));
                     print_files(files, "01", s -> s.contains("坂田银时"));
-                    print_files(files, "01", s -> s.contains("鲁路修"));
 
                     System.out.println("票差数据");
-                    print_files(files, "02", s -> s.contains("远坂凛") || s.contains("亚丝娜"));
-                    print_files(files, "02", s -> s.contains("坂田银时") || s.contains("鲁路修"));
+                    print_files(files, "02", s -> s.contains("佐仓千代") || s.contains("亚丝娜"));
+                    print_files(files, "02", s -> s.contains("路飞") || s.contains("坂田银时"));
                 });
     }
 
