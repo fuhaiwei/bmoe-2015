@@ -47,8 +47,8 @@ public class MainCount {
         Stream.of(path.listFiles())
                 .filter(f -> f.getName().startsWith("01 本战比赛情况"))
                 .sorted(reverseOrder())
-                .findFirst()
-                .ifPresent((file) -> print_file(out, file));
+                .limit(3)
+                .forEach((file) -> print_file(out, file));
         Stream.of(path.listFiles())
                 .filter(f -> f.getName().startsWith("02 本战票差情况"))
                 .sorted(reverseOrder())
