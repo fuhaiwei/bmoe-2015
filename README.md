@@ -5,8 +5,8 @@
 下载安装:
 
 ```
-1. git clone https://github.com/fuhaiwei/bilibili-moe-spider.git
-2. cd bilibili-moe-spdier
+1. git clone https://github.com/fuhaiwei/bmoe-2015.git
+2. cd bmoe-2015
 3. mvn clean compile
 ```
 
